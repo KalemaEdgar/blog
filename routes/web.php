@@ -29,4 +29,5 @@ Route::get('/posts/{post}', function ($slug) {
     return view('post', [
         'post' => $post
     ]);
-});
+})->where('post', '[A-z_\-]+'); // Regex to check that the slug follows a pattern (capital and small letters, underscore, dash)
+// })->whereAlpha('post'); // Incase the slug should only contain alphabets (capital and small letters)
