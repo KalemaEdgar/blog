@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Post;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +17,34 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('posts');
+    $files = File::files(resource_path('posts'));
+    $posts = [];
+
+    foreach ($files as $file) {
+        $document = YamlFrontMatter::parseFile($file);
+        $posts[] = new Post(
+            $document->title,
+            $document->excerpt,
+            $document->date,
+            $document->body(),
+            $document->slug,
+        );
+    }
+
+    // ddd($posts[0]);
+
+    return view('posts', [
+        'posts' => $posts
+    ]);
+
+    // return view('posts', [
+    //     'posts' => Post::all()
+    // ]);
 });
 
 Route::get('/posts/{post}', function ($slug) {
-    if (!file_exists($path = __DIR__ . "/../resources/posts/$slug.html")) {
-        return redirect('/');
-    }
-
-    $post = cache()->remember("posts.{$slug}", 5, fn () => file_get_contents($path));
-
-    return view('post', ['post' => $post]);
+    // Find a post by its slug and pass it to a view called "post"
+    return view('post', [
+        'post' => Post::find($slug)
+    ]);
 })->where('post', '[A-z_\-]+');
