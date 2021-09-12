@@ -22,15 +22,7 @@ Route::get('/posts/{post}', function ($slug) {
         return redirect('/');
     }
 
-    // // $post = cache()->remember("posts.{$slug}", 5, function () use ($path) {
-    // $post = cache()->remember("posts.{$slug}", now()->addSeconds(5), function () use ($path) {
-    //     // var_dump('file_get_contents');
-    //     return file_get_contents($path);
-    // });
-
-    // Short form of the above. Cache the page for 5 seconds
     $post = cache()->remember("posts.{$slug}", 5, fn () => file_get_contents($path));
 
     return view('post', ['post' => $post]);
-})->where('post', '[A-z_\-]+'); // Regex to check that the slug follows a pattern (capital and small letters, underscore, dash)
-// })->whereAlpha('post'); // Incase the slug should only contain alphabets (capital and small letters)
+})->where('post', '[A-z_\-]+');
