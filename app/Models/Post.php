@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\File;
+use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 class Post
 {
@@ -21,6 +22,27 @@ class Post
         $this->slug = $slug;
     }
 
+    public static function all()
+    {
+        // $files = File::files(resource_path('posts'));
+        // return array_map(fn ($file) => $file->getContents(), $files);
+
+        // Find all the files in the posts directory and collect them
+        // Loop or map over each item and parse that file into a document
+        // Once you have a collection of documents, map over it a second time and build our Post object
+        // Pass the Post object to the view
+
+        return collect(File::files(resource_path('posts')))
+            ->map(fn ($file) => YamlFrontMatter::parseFile($file))
+            ->map(fn ($document) => new Post(
+                $document->title,
+                $document->excerpt,
+                $document->body(),
+                $document->date,
+                $document->slug,
+            ));
+    }
+
     /**
      * This finds a post by a slug.
      * resource_path -- Gets the path to the resources folder.
@@ -28,16 +50,8 @@ class Post
      */
     public static function find($slug)
     {
-        if (!file_exists($path = resource_path("posts/$slug.html"))) {
-            return new ModelNotFoundException();
-        }
-
-        return cache()->remember("posts.{$slug}", 5, fn () => file_get_contents($path));
-    }
-
-    public static function all()
-    {
-        $files = File::files(resource_path('posts'));
-        return array_map(fn ($file) => $file->getContents(), $files);
+        // Of all the blog posts, find the one with a slug that matches the one requested
+        $posts = static::all(); // $posts is a collection at this point
+        return $posts->firstWhere('slug', $slug);
     }
 }
