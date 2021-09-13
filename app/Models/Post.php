@@ -23,6 +23,7 @@ class Post
 
     public static function all()
     {
+        // To refresh the cache, use cache()->forget('posts.all'); and then refresh the page to pick fresh records
         return cache()->rememberForever('posts.all', function () {
             return collect(File::files(resource_path('posts')))
             ->map(fn ($file) => YamlFrontMatter::parseFile($file))
