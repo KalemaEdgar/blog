@@ -25,8 +25,8 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->sentence(3),
             'slug' => $this->faker->slug(),
-            'excerpt' => '<p>' . $this->faker->sentence(10) . '</p>',
-            'body' => '<p>' . $this->faker->paragraph() . '</p>',
+            'excerpt' => $this->faker->sentence(10),
+            'body' => $this->faker->paragraph(),
             'user_id' => User::factory(), // By default, this will create a new user each time the factory runs
             'category_id' => Category::factory(), // By default, this will create a new category each time the factory runs
         ];
