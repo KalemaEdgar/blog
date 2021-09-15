@@ -1,7 +1,6 @@
 <?php
 namespace Database\Seeders;
 
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -15,55 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // Truncate the models before seeding to prevent duplicates
-        User::truncate();
-        Category::truncate();
-        Post::truncate();
+        // This will create 5 users each with a post (5 posts) and 5 categories
+        // Post::factory(5)->create();
 
-        $user = User::factory()->create();
-        // $user = User::factory(3)->create(); // Creates a collection of 3 users
-        // dd($user->pluck('id')[0]);
-
-        $personal = Category::create([
-            'name' => 'Personal',
-            'slug' => 'personal'
+        // Incase you want to have all the posts owned by 1 user
+        $user = User::factory()->create([
+            'name' => 'Kalema Edgar'
         ]);
 
-        $family = Category::create([
-            'name' => 'Family',
-            'slug' => 'family'
-        ]);
-
-        $work = Category::create([
-            'name' => 'Work',
-            'slug' => 'work'
-        ]);
-
-        Post::create([
-            'title' => 'My Personal Blog',
-            'slug' => 'my-personal-blog',
-            'excerpt' => '<p>lorem ipsum personal related</p>',
-            'body' => '<p>Here is where you can register web routes for your application. These routes are loaded by the RouteServiceProvider within a group which contains the "web" middleware group. Now create something great!</p>',
-            'category_id' => $personal->id,
-            'user_id' => $user->id,
-        ]);
-
-        Post::create([
-            'title' => 'My Family Blog',
-            'slug' => 'my-family-blog',
-            'excerpt' => '<p>lorem ipsum family related</p>',
-            'body' => '<p>Here is where you can register web routes for your application. These routes are loaded by the RouteServiceProvider within a group which contains the "web" middleware group. Now create something great!</p>',
-            'category_id' => $family->id,
-            'user_id' => $user->id,
-        ]);
-
-        Post::create([
-            'title' => 'My Work Blog',
-            'slug' => 'my-work-blog',
-            'excerpt' => '<p>lorem ipsum work related</p>',
-            'body' => '<p>Here is where you can register web routes for your application. These routes are loaded by the RouteServiceProvider within a group which contains the "web" middleware group. Now create something great!</p>',
-            'category_id' => $work->id,
-            'user_id' => $user->id,
+        // We will still have 5 categories, 5 posts but all owned by 1 user created above
+        Post::factory(5)->create([
+            'user_id' => $user->id
         ]);
     }
 }
