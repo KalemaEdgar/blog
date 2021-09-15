@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // This will create 5 users each with a post (5 posts) and 5 categories
-        // Post::factory(5)->create();
+        Post::factory(1)->create();
 
         // Incase you want to have all the posts owned by 1 user
         $user = User::factory()->create([
