@@ -18,6 +18,8 @@ class Post extends Model
     //     return 'slug';
     // }
 
+    protected $with = ['category', 'author'];
+
     // Relationships
     public function category()
     {
