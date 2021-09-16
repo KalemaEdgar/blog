@@ -19,7 +19,7 @@
 
                         {{ isset($currentCategory) ? ucwords($currentCategory->name) : 'Categories' }}
 
-                        <x-down-arrow class="absolute pointer-events-none" style="right: 12px;" />
+                        <x-icon name='down-arrow' class="absolute pointer-events-none" style="right: 12px;" />
                     </button>
                 </x-slot>
 
@@ -31,9 +31,7 @@
                 @foreach ($categories as $category)
                     <x-dropdown-item
                         href="/categories/{{ $category->slug }}"
-                        {{-- :active="isset ($currentCategory) && $currentCategory->is($category)" --}} {{-- Uses the id to check for equality --}}
-                        :active='request()->is("categories/{$category->slug}")' {{-- Uses the URI to check for equality --}}
-                        {{-- :active="request()->is('*' . $category->slug)" Uses the URI but matches anything with regex to check for equality --}}
+                        :active='request()->is("categories/{$category->slug}")'
                     >{{ ucwords($category->name) }}</x-dropdown-item>
                 @endforeach
             </x-dropdown>
