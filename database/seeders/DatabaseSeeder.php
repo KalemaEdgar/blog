@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -16,6 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         // This will create 5 users each with a post (5 posts) and 5 categories
         Post::factory(1)->create();
+
+        Category::factory(30)->create();
 
         // Incase you want to have all the posts owned by 1 user
         $user = User::factory()->create([

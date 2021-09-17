@@ -26,10 +26,8 @@
                 </div>
             </header>
 
-            <div class="text-sm mt-4">
-                <p>
-                    {{ $post->excerpt }}
-                </p>
+            <div class="text-sm mt-4 space-y-4">
+                {!! $post->excerpt !!} {{-- The <p> tags are nolonger required since these are in the database already --}}
             </div>
 
             <footer class="flex justify-between items-center mt-8">
