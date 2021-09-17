@@ -1,17 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
 
 class PostController extends Controller
 {
     public function index()
     {
+        // Because of the scope query filter, we are able to retrieve all posts and specific criteria all in the same method
         return view('posts', [
             'posts' => Post::latest()->filter(request(['search', 'category']))->get(),
-            'categories' => Category::all(),
-            'currentCategory' => Category::firstWhere('slug', request('category')), // To display the category after searching for it
         ]);
     }
 
