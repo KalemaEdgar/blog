@@ -28,12 +28,13 @@ class Post extends Model
             ->orWhere('body', 'like', '%' . $search . '%'));
 
         // Return all posts related to a category
+        // Give me the posts that have a category and specifically where the category slug matched what is supplied
         $query->when(
             $filters['category'] ?? false,
-            fn ($query, $category) => $query
-                ->whereExists(fn ($query) => $query->from('categories')
-                    ->whereColumn('categories.id', 'posts.category_id')
-                    ->where('categories.slug', $category))
+            fn ($query, $category) => $query->whereHas(
+                'category', // This uses the relationship below
+                fn ($query) => $query->where('slug', $category)
+            )
         );
     }
 
