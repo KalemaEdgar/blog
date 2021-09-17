@@ -18,7 +18,7 @@ class Post extends Model
     //     return 'slug';
     // }
 
-    protected $with = ['category', 'author'];
+    protected $with = ['category', 'author']; // Adding this will always load the category and author relationships when retrieving a Post model - Eager loading
 
     // Relationships
     public function category()
