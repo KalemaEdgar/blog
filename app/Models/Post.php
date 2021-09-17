@@ -20,6 +20,15 @@ class Post extends Model
 
     protected $with = ['category', 'author']; // Adding this will always load the category and author relationships when retrieving a Post model - Eager loading
 
+    public function scopeFilter($query, array $filters)
+    {
+        // If there is a search parameter, pick all posts where the title or body is like the search parameter
+        if ($filters['search'] ?? false) {
+            $query->where('title', 'like', '%' . request('search') . '%')
+            ->orWhere('body', 'like', '%' . request('search') . '%');
+        }
+    }
+
     // Relationships
     public function category()
     {

@@ -1,9 +1,8 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Category;
-use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,33 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // Log the executed queries to the log file
-    // DB::listen(function ($query) {
-    //     logger($query->sql, $query->bindings);
-    // });
+Route::get('/', [PostController::class, 'index'])->name('home');
 
-    $posts = Post::latest();
-
-    // If there is a search parameter, pick all posts where the title or body is like the search parameter
-    if (request('search')) {
-        $posts
-            ->where('title', 'like', '%' . request('search') . '%')
-            ->orWhere('body', 'like', '%' . request('search') . '%');
-    }
-
-    return view('posts', [
-        'posts' => $posts->get(),
-        'categories' => Category::all(),
-    ]);
-})->name('home');
-
-Route::get('/posts/{post:slug}', function (Post $post) {
-    // Find a post by its slug and pass it to a view called "post"
-    return view('post', [
-        'post' => $post
-    ]);
-});
+Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 
 Route::get('categories/{category:slug}', function (Category $category) {
     return view('posts', [
