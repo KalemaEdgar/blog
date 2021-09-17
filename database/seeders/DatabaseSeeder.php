@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // We will still have 5 categories, 5 posts but all owned by 1 user created above
-        Post::factory(5)->create([
+        Post::factory(20)->create([
             'user_id' => $user->id
         ]);
     }
