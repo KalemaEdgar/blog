@@ -23,10 +23,9 @@ class Post extends Model
     public function scopeFilter($query, array $filters)
     {
         // If there is a search parameter, pick all posts where the title or body is like the search parameter
-        $query->when($filters['search'] ?? false, function ($query, $search) {
-            $query->where('title', 'like', '%' . $search . '%')
-            ->orWhere('body', 'like', '%' . $search . '%');
-        });
+        $query->when($filters['search'] ?? false, fn ($query, $search) => $query
+            ->where('title', 'like', '%' . $search . '%')
+            ->orWhere('body', 'like', '%' . $search . '%'));
     }
 
     // Relationships
