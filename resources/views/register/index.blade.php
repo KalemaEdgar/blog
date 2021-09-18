@@ -4,6 +4,16 @@
             <h1 class="text-center font-bold text-xl">Register!</h1>
             <form method="POST" action='/register' class="mt-10">
                 @csrf {{-- To prevent Cross Site Request Forgery --}}
+
+                {{-- Display all form errors at once --}}
+                @if ($errors->any()) {{-- Check if the errors array has any errors, then display them --}}
+                    <ul class="mb-5">
+                        @foreach ($errors->all() as $error)
+                            <li class="text-red-500 text-xs">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
                 <div class="mb-6">
                     <label for="name" class="block mb-2 uppercase font-bold text-xs text-gray-700">Name</label>
                     <input type="text" name="name" id="name" value="{{ old('name') }}" required class="border border-gray-400 p-2 w-full">
