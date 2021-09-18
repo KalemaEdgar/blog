@@ -41,6 +41,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // A mutator to hash the password before saving it in the database
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = bcrypt($password);
+    }
+
+    // An accessor to capitalise the name every time it is retrieved from the database
+    public function getNameAttribute($name)
+    {
+        return ucwords($name);
+    }
+
     public function posts()
     {
         return $this->hasMany(Post::class);
