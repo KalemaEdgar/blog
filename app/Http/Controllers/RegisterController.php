@@ -15,9 +15,9 @@ class RegisterController extends Controller
         // If the request validation fails, Laravel will automatically redirect you back to the page
         $attributes = request()->validate([
             'name' => 'required|max:255',
-            'username' => 'required|max:255|min:3',
+            'username' => 'required|min:3|max:255',
             'email' => 'required|email|max:255',
-            'password' => 'required|max:255|min:8',
+            'password' => 'required|min:8|max:255',
         ]);
 
         User::create($attributes);
