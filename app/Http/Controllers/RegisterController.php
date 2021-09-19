@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -20,7 +21,10 @@ class RegisterController extends Controller
             'password' => 'required|min:8|max:255',
         ]);
 
-        User::create($attributes);
+        $user = User::create($attributes);
+
+        // Log the user in immediately after creation
+        Auth::login($user);
 
         return redirect('/')->with('success', 'Your account has been created.');
     }
