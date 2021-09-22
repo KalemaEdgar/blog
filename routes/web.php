@@ -8,10 +8,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('posts/{post:slug}', [PostController::class, 'show']);
 
-Route::get('register', [RegisterController::class, 'create'])->middleware('guest'); // Show the register page. Only a guest can access this page (not logged in)
+// Show the register page. Only a guest can access this page (not logged in)
+Route::get('register', [RegisterController::class, 'create'])->middleware('guest');
+// Create or register the user to the database
+Route::post('register', [RegisterController::class, 'store'])->middleware('guest');
 
-Route::post('register', [RegisterController::class, 'store'])->middleware('guest'); // Create or register the user to the database
-
-Route::get('login', [SessionsController::class, 'create'])->middleware('guest'); // Show the login page or link if you are a guest
-Route::post('login', [SessionsController::class, 'store'])->middleware('guest'); // Login the user
-Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth'); // Only access the logout link when the user is already signed in
+// Show the login page or link if you are a guest
+Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
+// Validate the user details and log them in
+Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
+// Only access the logout link if the user is already signed in using the middleware
+Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
