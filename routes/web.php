@@ -19,3 +19,7 @@ Route::get('login', [SessionsController::class, 'create'])->middleware('guest');
 Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
 // Only access the logout link if the user is already signed in using the middleware
 Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
+
+// Route::fallback(function () {
+//     // echo 'This is a fallback route incase you need to do something when a route doesnot exist and donot want to use the Laravel default pages';
+// });

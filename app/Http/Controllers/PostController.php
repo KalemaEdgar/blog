@@ -18,6 +18,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        // Uses Route Model Binding to inject the Post model corresponding to the slug
         // Find a post by its slug and pass it to a view "posts/show.blade.php"
         return view('posts.show', [
             'post' => $post

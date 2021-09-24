@@ -12,7 +12,7 @@ class Post extends Model
 
     // protected $guarded = ['id']; // Allow everything to be assigned other than the id. Even if you have the id in the query, the default value is used as specified in the table
 
-    // Use this for the route to search by the slug instead of the default id
+    // If you would like model binding to always use a database column other than id when retrieving a given model class, you may override the getRouteKeyName method on the Eloquent model:
     // Also this is used if you dont specify the key in the route ({post:slug})
     // public function getRouteKeyName()
     // {
