@@ -19,7 +19,7 @@ class Post extends Model
     //     return 'slug';
     // }
 
-    protected $with = ['category', 'author']; // Adding this will always load the category and author relationships when retrieving a Post model - Eager loading
+    protected $with = ['category', 'author', 'comments']; // Adding this will always load these relationships when retrieving a Post model - Eager loading
 
     public function scopeFilter($query, array $filters)
     {
@@ -60,5 +60,10 @@ class Post extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
