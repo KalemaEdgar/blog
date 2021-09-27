@@ -24,7 +24,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'post_id' => Post::factory(), // This means that if you dont explicitly send a post id in the seeder, the factory will create a post and associate the comment to it.
+            'post_id' => Post::factory(), // This means that if you dont explicitly send a post_id in the seeder, the factory will create a post and associate the comment to it.
             'user_id' => User::factory(), // author of the comment
             'body' => $this->faker->text(),
             'active' => true,
