@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
 
         // Incase you want to have all the posts owned by 1 user
         $user = User::factory()->create([
-            'name' => 'Kalema Edgar'
+            'name' => 'Kalema Edgar',
+            'email' => 'test@gmail.com',
         ]);
 
         // We will still have categories, posts but all owned by 1 user created above
