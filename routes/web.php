@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 // RESTful methods
 // index - Show all results
@@ -32,24 +33,32 @@ Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
 Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
 
 // Mailchimp for newsletters
-Route::get('ping', function () {
-    $mailchimp = new \MailchimpMarketing\ApiClient();
-
-    $mailchimp->setConfig([
-        'apiKey' => config('services.mailchimp.key'),
-        'server' => 'us5'
+Route::post('newsletter', function () {
+    request()->validate([
+        'email' => 'required|email'
     ]);
 
-    // $response = $mailchimp->ping->get(); // Health check for the Mailchimp API
-    // $response = $mailchimp->lists->getAllLists(); // Get all lists
-    // $response = $mailchimp->lists->getList('76607106aa'); // Get my list info
-    // $response = $mailchimp->lists->getListMembersInfo('76607106aa'); // Get my list members
-    $response = $mailchimp->lists->addListMember('76607106aa', [
-        'email_address' => 'laravel@gmail.com',
-        'status' => 'subscribed',
-    ]); // Add a member to a list
+    try {
+        $mailchimp = new \MailchimpMarketing\ApiClient();
 
-    dd($response);
+        $mailchimp->setConfig([
+            'apiKey' => config('services.mailchimp.key'),
+            'server' => 'us5'
+        ]);
+
+        $response = $mailchimp->lists->addListMember('76607106aa', [
+            'email_address' => request('email'),
+            'status' => 'subscribed',
+        ]);
+    } catch (\Exception $e) {
+        logger($e->getMessage());
+        throw ValidationException::withMessages([
+            'email' => 'This email could not be added to our newsletter list.'
+        ]);
+    }
+
+    return redirect('/')
+        ->with('success', 'You are now signed up for our newsletter.');
 });
 
 Route::fallback(function () {
