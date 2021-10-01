@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
@@ -34,23 +35,7 @@ Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
 Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
 
 // Mailchimp for newsletters
-Route::post('newsletter', function (Newsletter $newsletter) {
-    request()->validate([
-        'email' => 'required|email'
-    ]);
-
-    try {
-        $newsletter->subscribe(request('email'));
-    } catch (\Exception $e) {
-        logger($e->getMessage());
-        throw ValidationException::withMessages([
-            'email' => 'This email could not be added to our newsletter list.'
-        ]);
-    }
-
-    return redirect('/')
-        ->with('success', 'You are now signed up for our newsletter.');
-});
+Route::post('newsletter', NewsletterController::class);
 
 Route::fallback(function () {
     echo 'This is a fallback route incase you need to do something when a route doesnot exist but donot want to use the Laravel default pages which are great.';
