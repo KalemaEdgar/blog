@@ -4,6 +4,7 @@ use App\Http\Controllers\PostCommentsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Services\Newsletter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
@@ -39,17 +40,8 @@ Route::post('newsletter', function () {
     ]);
 
     try {
-        $mailchimp = new \MailchimpMarketing\ApiClient();
-
-        $mailchimp->setConfig([
-            'apiKey' => config('services.mailchimp.key'),
-            'server' => 'us5'
-        ]);
-
-        $response = $mailchimp->lists->addListMember('76607106aa', [
-            'email_address' => request('email'),
-            'status' => 'subscribed',
-        ]);
+        $newsletter = new Newsletter();
+        $newsletter->subscribe(request('email'));
     } catch (\Exception $e) {
         logger($e->getMessage());
         throw ValidationException::withMessages([
