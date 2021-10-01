@@ -34,13 +34,12 @@ Route::post('login', [SessionsController::class, 'store'])->middleware('guest');
 Route::post('logout', [SessionsController::class, 'destroy'])->middleware('auth');
 
 // Mailchimp for newsletters
-Route::post('newsletter', function () {
+Route::post('newsletter', function (Newsletter $newsletter) {
     request()->validate([
         'email' => 'required|email'
     ]);
 
     try {
-        $newsletter = new Newsletter();
         $newsletter->subscribe(request('email'));
     } catch (\Exception $e) {
         logger($e->getMessage());
