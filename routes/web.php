@@ -38,3 +38,6 @@ Route::post('newsletter', NewsletterController::class);
 Route::fallback(function () {
     echo 'This is a fallback route incase you need to do something when a route doesnot exist but donot want to use the Laravel default pages which are great.';
 });
+
+// Admin section
+Route::get('admin/posts/create', [PostController::class, 'create'])->middleware('admin');
